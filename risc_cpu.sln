@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33103.184
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "model", "model\model.vcxproj", "{4AF213F3-8B10-4660-83A9-A90FD7C9BDA2}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "risc_cpu", "risc_cpu\risc_cpu.vcxproj", "{3246F9B3-2E51-43CE-B373-3E2F3CEB7E78}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "imgui", "imgui\imgui.vcxproj", "{A7B8789B-4062-4E1E-9958-787C1B5D26AF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3246F9B3-2E51-43CE-B373-3E2F3CEB7E78}.Debug|x64.ActiveCfg = Debug|x64
+		{3246F9B3-2E51-43CE-B373-3E2F3CEB7E78}.Debug|x64.Build.0 = Debug|x64
+		{3246F9B3-2E51-43CE-B373-3E2F3CEB7E78}.Release|x64.ActiveCfg = Release|x64
+		{3246F9B3-2E51-43CE-B373-3E2F3CEB7E78}.Release|x64.Build.0 = Release|x64
+		{4AF213F3-8B10-4660-83A9-A90FD7C9BDA2}.Debug|x64.ActiveCfg = Debug|x64
+		{4AF213F3-8B10-4660-83A9-A90FD7C9BDA2}.Debug|x64.Build.0 = Debug|x64
+		{4AF213F3-8B10-4660-83A9-A90FD7C9BDA2}.Release|x64.ActiveCfg = Release|x64
+		{4AF213F3-8B10-4660-83A9-A90FD7C9BDA2}.Release|x64.Build.0 = Release|x64
+		{A7B8789B-4062-4E1E-9958-787C1B5D26AF}.Debug|x64.ActiveCfg = Debug|x64
+		{A7B8789B-4062-4E1E-9958-787C1B5D26AF}.Debug|x64.Build.0 = Debug|x64
+		{A7B8789B-4062-4E1E-9958-787C1B5D26AF}.Release|x64.ActiveCfg = Release|x64
+		{A7B8789B-4062-4E1E-9958-787C1B5D26AF}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4ECAA6A9-D20F-4268-A228-80CD95C1E7EC}
+	EndGlobalSection
+EndGlobal
