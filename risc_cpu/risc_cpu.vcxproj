@@ -99,10 +99,17 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\test.h" />
+    <ClCompile Include="src\cpu.cpp" />
+    <ClCompile Include="src\Command.cpp" />
+    <ClCompile Include="src\Memory.cpp" />
+    <ClCompile Include="src\start.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\test.cpp" />
+    <ClInclude Include="src\Command.h" />
+    <ClInclude Include="src\CommandList.h" />
+    <ClInclude Include="src\cpu.h" />
+    <ClInclude Include="src\Memory.h" />
+    <ClInclude Include="src\start.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

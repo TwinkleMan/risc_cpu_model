@@ -18,12 +18,12 @@
     <ClCompile Include="src\application.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\ui\MainWindow.cpp">
+    <ClCompile Include="src\ui\ui.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\ui\MainWindow.h">
+    <ClInclude Include="src\ui\ui.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
