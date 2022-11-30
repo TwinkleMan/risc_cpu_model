@@ -38,6 +38,7 @@ static void glfw_error_callback(int error, const char* description)
 
 static CommandLog commandLog;
 bool stepTaken;
+std::string intMessage = "";
 
 int DrawUI()
 {
@@ -653,7 +654,7 @@ void RunProgram()
     while (i < initialSize)
     {
     	if (!processed || stepTaken) {
-    		CpuPointer->Execute(commandLog.CommandsToProcess[0], *MemoryPointer);
+    		intMessage = CpuPointer->Execute(commandLog.CommandsToProcess[0], *MemoryPointer);
             CpuPointer->PC++;
             commandLog.currentCommandIndex++;
             commandLog.CommandsToProcess.erase(commandLog.CommandsToProcess.begin());

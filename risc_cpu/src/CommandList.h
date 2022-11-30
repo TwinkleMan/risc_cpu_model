@@ -646,44 +646,44 @@ namespace Commands {
 
 
     //load/store operations
-    /*LW rd, imm12(rs1)*/
-    /*rd <- mem[rs1 + imm12]*/
+    /*LW rd, imm13(rs1)*/
+    /*rd <- mem[rs1 + imm13]*/
     void LW(Mem& memory, Command command) {
         memory.registers[command.param1] = memory.GetWordFromMem(command.param2 + command.offset);
         std::cout << "LW rd = " << std::bitset<32>(memory.registers[command.param1]) << std::endl;
         std::cout << "as int: " << memory.registers[command.param1] << '\n';
     }
 
-    /*LH rd, imm12(rs1)*/
-    /*rd <- mem[rs1 + imm12]*/
+    /*LH rd, imm13(rs1)*/
+    /*rd <- mem[rs1 + imm13]*/
     void LH(Mem& memory, Command command) {
         memory.registers[command.param1] = memory.GetHalfwordFromMem(command.param2 + command.offset);
         std::cout << "LH rd = " << std::bitset<32>(memory.registers[command.param1]) << std::endl;
     }
 
-    /*LB rd, imm12(rs1)*/
-    /*rd <- mem[rs1 + imm12]*/
+    /*LB rd, imm13(rs1)*/
+    /*rd <- mem[rs1 + imm13]*/
     void LB(Mem& memory, Command command) {
         memory.registers[command.param1] = memory.GetByteFromMem(command.param2 + command.offset);
         std::cout << "LH rd = " << std::bitset<32>(memory.registers[command.param1]) << std::endl;
     }
 
-    /*SW rs1, imm12(rs2)*/
-    /*rs1 -> mem[rs2 + imm12]*/
+    /*SW rs1, imm13(rs2)*/
+    /*rs1 -> mem[rs2 + imm13]*/
     void SW(Mem& memory, Command command) {
         memory.SetWordToMem(command.param2 + command.offset, memory.registers[command.param1]);
         std::cout << "SW rd = " << std::bitset<32>(memory.GetWordFromMem(command.param2 + command.offset)) << std::endl;
     }
 
-    /*SH rs1, imm12(rs2)*/
-    /*rs1 -> mem[rs2 + imm12]*/
+    /*SH rs1, imm13(rs2)*/
+    /*rs1 -> mem[rs2 + imm13]*/
     void SH(Mem& memory, Command command) {
         memory.SetHalfwordToMem(command.param2 + command.offset, memory.registers[command.param1] >> 16);
         std::cout << "SW rd = " << std::bitset<32>(memory.GetWordFromMem(command.param2 + command.offset)) << std::endl;
     }
 
-    /*SB rs1, imm12(rs2)*/
-    /*rs1 -> mem[rs2 + imm12]*/
+    /*SB rs1, imm13(rs2)*/
+    /*rs1 -> mem[rs2 + imm13]*/
     void SB(Mem& memory, Command command) {
         memory.SetByteToMem(command.param2 + command.offset, memory.registers[command.param1] >> 8);
         std::cout << "SW rd = " << std::bitset<32>(memory.GetWordFromMem(command.param2 + command.offset)) << std::endl;
@@ -753,10 +753,10 @@ namespace Commands {
         _cpu->FLAGS = _cpu->FLAGSI;
     }
 
-    /*CALL r1, imm12*/
+    /*CALL r1, imm13*/
     /*Subprogram call*/
     /*PC -> SYSREG*/
-    /*PC = r1 + imm12*/
+    /*PC = r1 + imm13*/
     void CALL(Mem& memory, Command command) {
         _cpu->SYSREG = _cpu->PC;
         _cpu->PC = memory.registers[command.param1] + command.offset;
@@ -768,70 +768,70 @@ namespace Commands {
         _cpu->PC = _cpu->SYSREG;
     }
 
-    /*JMP r1, imm12*/
-    /*PC = r1 + imm12*/
+    /*JMP r1, imm13*/
+    /*PC = r1 + imm13*/
     void JMP(Mem& memory, Command command) {
         _cpu->PC = memory.registers[command.param1] + command.offset;
     }
 
-    /*JZ r1, imm12*/
-    /*PC = r1 + imm12*/
+    /*JZ r1, imm13*/
+    /*PC = r1 + imm13*/
     void JZ(Mem& memory, Command command) {
         if (_cpu->FLAGS & (1 << 7)) {
             _cpu->PC = memory.registers[command.param1] + command.offset;
         }
     }
 
-    /*JNZ r1, imm12*/
-    /*PC = r1 + imm12*/
+    /*JNZ r1, imm13*/
+    /*PC = r1 + imm13*/
     void JNZ(Mem& memory, Command command) {
         if (!(_cpu->FLAGS & (1 << 7))) {
             _cpu->PC = memory.registers[command.param1] + command.offset;
         }
     }
 
-    /*JO r1, imm12*/
-    /*PC = r1 + imm12*/
+    /*JO r1, imm13*/
+    /*PC = r1 + imm13*/
     void JO(Mem& memory, Command command) {
         if (_cpu->FLAGS & (1 << 4)) {
             _cpu->PC = memory.registers[command.param1] + command.offset;
         }
     }
 
-    /*JNO r1, imm12*/
-    /*PC = r1 + imm12*/
+    /*JNO r1, imm13*/
+    /*PC = r1 + imm13*/
     void JNO(Mem& memory, Command command) {
         if (!(_cpu->FLAGS & (1 << 4))) {
             _cpu->PC = memory.registers[command.param1] + command.offset;
         }
     }
 
-    /*JC r1, imm12*/
-    /*PC = r1 + imm12*/
+    /*JC r1, imm13*/
+    /*PC = r1 + imm13*/
     void JC(Mem& memory, Command command) {
         if (_cpu->FLAGS & (1 << 6)) {
             _cpu->PC = memory.registers[command.param1] + command.offset;
         }
     }
 
-    /*JNC r1, imm12*/
-    /*PC = r1 + imm12*/
+    /*JNC r1, imm13*/
+    /*PC = r1 + imm13*/
     void JNC(Mem& memory, Command command) {
         if (!(_cpu->FLAGS & (1 << 6))) {
             _cpu->PC = memory.registers[command.param1] + command.offset;
         }
     }
 
-    /*JS r1, imm12*/
-    /*PC = r1 + imm12*/
+    /*JS r1, imm13*/
+    /*PC = r1 + imm13*/
     void JS(Mem& memory, Command command) {
         if (_cpu->FLAGS & (1 << 5)) {
             _cpu->PC = memory.registers[command.param1] + command.offset;
         }
     }
 
-    /*JNS r1, imm12*/
-    /*PC = r1 + imm12*/
+    /*JNS r1, imm13*/
+    /*PC = r1 + imm13*/
     void JNS(Mem& memory, Command command) {
         if (!(_cpu->FLAGS & (1 << 5))) {
             _cpu->PC = memory.registers[command.param1] + command.offset;

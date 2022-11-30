@@ -83,13 +83,15 @@ void CPU::RunCommand(Command& command, Mem& memory)
 	command.Execute(memory);
 }
 
-void CPU::HandleInterruptions()
+std::string CPU::HandleInterruptions()
 {
+	std::string message;
+
 	if ((interruptCode >= 0 && interruptCode <= 1)) {
 		//interrupt (I flag check)
 		if (FLAGS & (1 << 3)) {
 			auto temp1 = _memory->interruptTable[interruptCode];
-			auto temp = (_memory->*temp1)();
+			message = (_memory->*temp1)();
 
 			PC = PCI;
 			FLAGS = FLAGSI;
@@ -102,7 +104,7 @@ void CPU::HandleInterruptions()
 		//exception (runs always, no I flag check)
 		if (interruptCode == 4) stepMode = 1;
 		auto temp1 = _memory->interruptTable[interruptCode];
-		auto temp = (_memory->*temp1)();
+		message = (_memory->*temp1)();
 
 		//PC = PCI;
 		//FLAGS = FLAGSI;
@@ -115,8 +117,10 @@ void CPU::HandleInterruptions()
 	if (stepMode)
 	{
 		auto temp1 = _memory->interruptTable[4];
-		auto temp = (_memory->*temp1)();
+		message = (_memory->*temp1)();
 	}
+
+	return message;
 }
 
 void CPU::Execute(u32 cycles, Mem& memory)
@@ -130,11 +134,11 @@ void CPU::Execute(u32 cycles, Mem& memory)
 	}
 }
 
-void CPU::Execute(Command& command, Mem& memory)
+std::string CPU::Execute(Command& command, Mem& memory)
 {
 	//if (Command::_cpu == nullptr) Command::SetCPU(this);
 	RunCommand(command, memory);
-	HandleInterruptions();
+	return HandleInterruptions();
 }
 
 void CPU::SetZFlag()

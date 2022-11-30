@@ -45,10 +45,10 @@ struct CPU {
     /*execute command, constructed in TranslateCommand*/
     void RunCommand(Command& command, Mem& memory);
 
-    void HandleInterruptions();
+    std::string HandleInterruptions();
 
     void Execute(u32 cycles, Mem& memory);
-    void Execute(Command& command, Mem& memory);
+    std::string Execute(Command& command, Mem& memory);
 
     void SetZFlag();
     void SetCFlag();
