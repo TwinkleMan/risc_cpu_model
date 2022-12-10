@@ -1,6 +1,4 @@
-//#include <cstdio>
 #include <chrono>
-//#include <thread>
 #include <bitset>
 
 #include "ui.h"
@@ -8,12 +6,6 @@
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
-
-
-// Dear ImGui: standalone example application for GLFW + OpenGL 3, using programmable pipeline
-// (GLFW is a cross-platform general purpose library for handling windows, inputs, OpenGL/Vulkan/Metal graphics context creation, etc.)
-// If you are new to Dear ImGui, read documentation from the docs/ folder + read the top of imgui.cpp.
-// Read online: https://github.com/ocornut/imgui/tree/master/docs
 
 #if defined(IMGUI_IMPL_OPENGL_ES2)
 #include <GLES2/gl2.h>
@@ -23,10 +15,6 @@
 #include <cstring>
 
 #include "ImGuiFileDialog/ImGuiFileDialog.h"
-
-// [Win32] Our example includes a copy of glfw3.lib pre-compiled with VS2010 to maximize ease of testing and compatibility with old VS compilers.
-// To link with VS2010-era libraries, VS2015+ requires linking with legacy_stdio_definitions.lib, which we do using this pragma.
-// Your own project should not be affected, as you are likely to link with a newer binary of GLFW that is adequate for your version of Visual Studio.
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
 #pragma comment(lib, "legacy_stdio_definitions")
 #endif
@@ -104,21 +92,6 @@ int GUI::DrawUI()
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init(glsl_version);
 
-    // Load Fonts
-    // - If no fonts are loaded, dear imgui will use the default font. You can also load multiple fonts and use ImGui::PushFont()/PopFont() to select them.
-    // - AddFontFromFileTTF() will return the ImFont* so you can store it if you need to select the font among multiple.
-    // - If the file cannot be loaded, the function will return NULL. Please handle those errors in your application (e.g. use an assertion, or display an error and quit).
-    // - The fonts will be rasterized at a given size (w/ oversampling) and stored into a texture when calling ImFontAtlas::Build()/GetTexDataAsXXXX(), which ImGui_ImplXXXX_NewFrame below will call.
-    // - Read 'docs/FONTS.md' for more instructions and details.
-    // - Remember that in C/C++ if you want to include a backslash \ in a string literal you need to write a double backslash \\ !
-    //io.Fonts->AddFontDefault();
-    //io.Fonts->AddFontFromFileTTF("../../misc/fonts/Roboto-Medium.ttf", 16.0f);
-    //io.Fonts->AddFontFromFileTTF("../../misc/fonts/Cousine-Regular.ttf", 15.0f);
-    //io.Fonts->AddFontFromFileTTF("../../misc/fonts/DroidSans.ttf", 16.0f);
-    //io.Fonts->AddFontFromFileTTF("../../misc/fonts/ProggyTiny.ttf", 10.0f);
-    //ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, NULL, io.Fonts->GetGlyphRangesJapanese());
-    //IM_ASSERT(font != NULL);
-
     // Our state
     bool show_demo_window = true;
     bool show_another_window = false;
@@ -132,11 +105,6 @@ int GUI::DrawUI()
     // Main loop
     while (!glfwWindowShouldClose(window))
     {
-        // Poll and handle events (inputs, window resize, etc.)
-        // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
-        // - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application, or clear/overwrite your copy of the mouse data.
-        // - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application, or clear/overwrite your copy of the keyboard data.
-        // Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
         glfwPollEvents();
 
         // Start the Dear ImGui frame
@@ -148,16 +116,9 @@ int GUI::DrawUI()
         {
             ImGuiWindowFlags window_flags = 0;
             window_flags |= ImGuiWindowFlags_NoTitleBar;
-            //window_flags |= ImGuiWindowFlags_NoMove;
-            //window_flags |= ImGuiWindowFlags_NoResize;
-            //ImGui::ShowDemoWindow(&show_demo_window);
-
             SetupDockspace(nullptr);
+            ImGui::Begin("RiscCpu", nullptr, window_flags);                          //
 
-            ImGui::Begin("RiscCpu", nullptr, window_flags);                          // Create a window called "Hello, world!" and append into it.
-
-
-            ////my stuff
             // Child 1
             {
                 ImGuiWindowFlags window_flags = ImGuiWindowFlags_HorizontalScrollbar;
@@ -230,18 +191,6 @@ int GUI::DrawUI()
             ImGui::End();
         }
 
-        // 3. Show another simple window.
-        if (show_another_window)
-        {
-            ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked
-
-
-
-            if (ImGui::Button("Close Me"))
-                show_another_window = false;
-            ImGui::End();
-        }
-
         // Rendering
         ImGui::Render();
         int display_w, display_h;
@@ -250,10 +199,6 @@ int GUI::DrawUI()
         glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
         glClear(GL_COLOR_BUFFER_BIT);
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-        // Update and Render additional Platform Windows
-        // (Platform functions may change the current OpenGL context, so we save/restore it to make it easier to paste this code elsewhere.
-        //  For this specific demo app we could also call glfwMakeContextCurrent(window) directly)
         if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
         {
             GLFWwindow* backup_current_context = glfwGetCurrentContext();
@@ -277,10 +222,6 @@ int GUI::DrawUI()
 }
 
 CommandLog::CommandLog(){
-    /*TextBuffer.clear();
-    LineOffsets.clear();
-    LineOffsets.push_back(0);*/
-
     ClearLog();
     memset(InputBuf, 0, sizeof(InputBuf));
     HistoryPos = -1;
@@ -454,7 +395,6 @@ void CommandLog::ExecCommand(const char* command_line)
     ScrollToBottom = true;
 }
 
-// In C++11 you'd be better off using lambdas for this sort of forwarding callbacks
 int CommandLog::TextEditCallbackStub(ImGuiInputTextCallbackData* data)
 {
     CommandLog* console = (CommandLog*)data->UserData;
@@ -523,11 +463,6 @@ int CommandLog::TextEditCallback(ImGuiInputTextCallbackData* data)
                     data->DeleteChars((int)(word_start - data->Buf), (int)(word_end - word_start));
                     data->InsertChars(data->CursorPos, candidates[0], candidates[0] + match_len);
                 }
-
-                // List matches
-                /*AddLog("Possible matches:\n");
-                for (int i = 0; i < candidates.Size; i++)
-                    AddLog("- %s\n", candidates[i]);*/
             }
 
             break;
@@ -582,12 +517,7 @@ void GUI::SetupDockspace(bool* p_open)
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
 	window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
 	window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
-
-    // Important: note that we proceed even if Begin() returns false (aka window is collapsed).
-    // This is because we want to keep our DockSpace() active. If a DockSpace() is inactive,
-    // all active windows docked into it will lose their parent and become undocked.
-    // We cannot preserve the docking relationship between an active window and an inactive docking, otherwise
-    // any change of dockspace/settings would lead to windows being stuck in limbo and never being visible.
+    
     if (!opt_padding)
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
     ImGui::Begin("DockSpace", p_open, window_flags);

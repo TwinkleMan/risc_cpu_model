@@ -62,4 +62,3 @@ private:
     static void PopStyleCompact();
     int Pause();
 };
-
