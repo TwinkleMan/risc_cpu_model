@@ -40,7 +40,7 @@ static CommandLog commandLog;
 bool stepTaken;
 std::string intMessage = "";
 
-int DrawUI()
+int GUI::DrawUI()
 {
     // Setup window
     glfwSetErrorCallback(glfw_error_callback);
@@ -166,7 +166,7 @@ int DrawUI()
                 ImGui::BeginChild("Commands", ImVec2(400, 260), true, window_flags);
                 ImGui::Text("Commands");
                 ImGui::Separator();
-                ShowCommands();
+                GUI::ShowCommands();
                 ImGui::EndChild();
                 ImGui::PopStyleVar();
             }
@@ -180,7 +180,7 @@ int DrawUI()
                 ImGui::BeginChild("Regisers", ImVec2(200, 260), true, childFlags);
                 ImGui::Text("Registers");
                 ImGui::Separator();
-                ShowRegisters();
+                GUI::ShowRegisters();
                 ImGui::EndChild();
                 ImGui::PopStyleVar();
             }
@@ -194,7 +194,7 @@ int DrawUI()
                 ImGui::BeginChild("Controls", ImVec2(200, 260), true, childFlags);
                 ImGui::Text("Controls");
                 ImGui::Separator();
-                ShowControls();
+                GUI::ShowControls();
                 ImGui::EndChild();
                 ImGui::PopStyleVar();
             }
@@ -206,7 +206,7 @@ int DrawUI()
                 ImGui::BeginChild("Flags", ImVec2(820, 150), true, childFlags);
                 ImGui::Text("Flags");
                 ImGui::Separator();
-                ShowFlags();
+                GUI::ShowFlags();
                 ImGui::EndChild();
                 ImGui::PopStyleVar();
             }
@@ -218,7 +218,7 @@ int DrawUI()
                 ImGui::BeginChild("Operation", ImVec2(820, 150), true, childFlags);
                 ImGui::Text("Current operation");
                 ImGui::Separator();
-                ShowOperationInfo();
+                GUI::ShowOperationInfo();
                 ImGui::EndChild();
                 ImGui::PopStyleVar();
             }
@@ -562,11 +562,11 @@ int CommandLog::TextEditCallback(ImGuiInputTextCallbackData* data)
     return 0;
 }
 
-void ShowCommands() {
+void GUI::ShowCommands() {
     commandLog.Draw();
 }
 
-void SetupDockspace(bool* p_open)
+void GUI::SetupDockspace(bool* p_open)
 {
     static bool opt_fullscreen = true;
     static bool opt_padding = false;
@@ -608,7 +608,7 @@ void SetupDockspace(bool* p_open)
     ImGui::End();
 }
 
-void ShowRegisters()
+void GUI::ShowRegisters()
 {
     const float TEXT_BASE_HEIGHT = ImGui::GetTextLineHeightWithSpacing();
     ImGuiTableFlags flags = ImGuiTableFlags_ScrollY | ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersV | ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable;
@@ -636,7 +636,7 @@ void ShowRegisters()
                         ImGui::Text("%d", row);
                     }
                     else {
-                        ImGui::Text("%d", MemoryPointer->registers[row]);
+                        ImGui::Text("%d", GUI::MemoryPointer->registers[row]);
                     }
                 }
             }
@@ -645,7 +645,7 @@ void ShowRegisters()
     }
 }
 
-void RunProgram()
+void GUI::RunProgram()
 {
     bool processed = false;
     int initialSize = commandLog.CommandsToProcess.size();
@@ -654,7 +654,7 @@ void RunProgram()
     while (i < initialSize)
     {
     	if (!processed || stepTaken) {
-    		intMessage = CpuPointer->Execute(commandLog.CommandsToProcess[0], *MemoryPointer);
+    		intMessage = CpuPointer->Execute(commandLog.CommandsToProcess[0], *GUI::MemoryPointer);
             CpuPointer->PC++;
             commandLog.currentCommandIndex++;
             commandLog.CommandsToProcess.erase(commandLog.CommandsToProcess.begin());
@@ -673,7 +673,7 @@ void RunProgram()
     }
 }
 
-void ShowControls()
+void GUI::ShowControls()
 {
     std::string sudoLabelTrue = "Enter Superuser mode###modeButton";
     std::string sudoLabelFalse = "Exit Superuser mode###modeButton";
@@ -718,7 +718,7 @@ void ShowControls()
     //start program
     if (startProgram)
     {
-        std::thread commandRunner(RunProgram);
+        std::thread commandRunner(&GUI::RunProgram, this);
         commandRunner.join();
     }
 
@@ -729,7 +729,7 @@ void ShowControls()
 
     if(doReset)
     {
-        CpuPointer->Reset(*MemoryPointer);
+	    CpuPointer->Reset(*MemoryPointer);
         commandLog.CommandsToProcess.clear();
         commandLog.ClearLog();
     }
@@ -738,21 +738,21 @@ void ShowControls()
 	if (doStep)
 	{
 		stepTaken = true;
-        std::thread commandRunner(RunProgram);
+        std::thread commandRunner(&GUI::RunProgram, this);
         commandRunner.join();
 	}
 
     if (enterSudo)
     {
         if (!commandLog.isSudo) {
-            CpuPointer->SetUFlag();
+	        CpuPointer->SetUFlag();
         } else CpuPointer->ResetUFlag();
 
         commandLog.isSudo = !commandLog.isSudo;
     }
 }
 
-void ShowFlags()
+void GUI::ShowFlags()
 {
     ImGuiTableFlags flags = flags = !ImGuiTableFlags_ScrollY | ImGuiTableFlags_RowBg | !ImGuiTableFlags_Resizable | ImGuiTableFlags_NoHostExtendX | ImGuiTableFlags_SizingStretchSame | ImGuiTableFlags_BordersOuterH | ImGuiTableFlags_BordersV;
     
@@ -784,7 +784,7 @@ void ShowFlags()
     }
 }
 
-void ShowOperationInfo()
+void GUI::ShowOperationInfo()
 {
     ImGuiTableFlags flags = flags = !ImGuiTableFlags_ScrollY | ImGuiTableFlags_RowBg | !ImGuiTableFlags_Resizable | ImGuiTableFlags_NoHostExtendX | ImGuiTableFlags_SizingStretchSame | ImGuiTableFlags_BordersOuterH | ImGuiTableFlags_BordersV;
 
@@ -810,7 +810,6 @@ void ShowOperationInfo()
             {
                 ImGui::TableSetColumnIndex(column);
 
-                //if (column == 0) ImGui::Text("%d", CpuPointer->PC);
                 if (column == 1) ImGui::Text("%d", command.opcode);
                 if (column == 2) ImGui::Text("%d", command.param1);
                 if (column == 3) ImGui::Text("%d", command.param2);
@@ -821,17 +820,17 @@ void ShowOperationInfo()
     }
 }
 
-void SetCpuPointer(CPU& p)
+void GUI::SetCpuPointer(CPU& p)
 {
-    CpuPointer = &p;
+	CpuPointer = &p;
 }
 
-void SetMemoryPointer(Mem& p)
+void GUI::SetMemoryPointer(Mem& p)
 {
-    MemoryPointer = &p;
+	MemoryPointer = &p;
 }
 
-int Pause()
+int GUI::Pause()
 {
 	while (!stepTaken) {}
 
@@ -839,14 +838,14 @@ int Pause()
 }
 
 // Make the UI compact because there are so many fields
-void PushStyleCompact()
+void GUI::PushStyleCompact()
 {
     ImGuiStyle& style = ImGui::GetStyle();
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(style.FramePadding.x, (float)(int)(style.FramePadding.y * 0.60f)));
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(style.ItemSpacing.x, (float)(int)(style.ItemSpacing.y * 0.60f)));
 }
 
-void PopStyleCompact()
+void GUI::PopStyleCompact()
 {
     ImGui::PopStyleVar(2);
 }

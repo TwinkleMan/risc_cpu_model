@@ -1,16 +1,10 @@
 #pragma once
-
 #include <vector>
 
 #include "cpu.h"
 #include "imgui.h"
 
 struct CommandLog {
-    /*ImGuiTextBuffer     TextBuffer;
-    ImVector<int>       LineOffsets; // Index to lines offset. We maintain this with AddLog() calls.
-    bool                AutoScroll;  // Keep scrolling if already at the bottom.*/
-
-
     char                  InputBuf[256];
     ImVector<char*>       Items;
     ImVector<const char*> Commands;
@@ -44,37 +38,28 @@ struct CommandLog {
     void Draw();
 };
 
-inline CPU* CpuPointer;
-//inline Word* PC;
-//inline Word* PciPointer;
-//inline Byte* FlagsPointer;
-//inline Byte* FlagsiPointer;
-//inline Word* SysregPointer;
+class GUI
+{
+    public:
+    int DrawUI();
 
-inline Mem* MemoryPointer;
-//inline Word* RegistersPointer;
-//inline std::map<long, Byte>* ExternMemPointer;
+    void SetCpuPointer(CPU& p);
+    void SetMemoryPointer(Mem& p);
 
-void SetCpuPointer(CPU& p);
-void SetMemoryPointer(Mem& p);
-//void SetPcPointer(Word& p);
-//void SetPciPointer(Word& p);
-//void SetFlagsPointer(Byte& p);
-//void SetFlagsiPointer(Byte& p);
-//void SetSysregPointer(Word& p);
-//void SetRegistersPointer(Word& p);
-//void SetExternMemPointer(std::map<long, Byte>& p);
+private:
+    CPU* CpuPointer;
+    Mem* MemoryPointer;
 
+    void SetupDockspace(bool* p_open);
+    static void ShowCommands();
+    void ShowRegisters();
+    void ShowControls();
+    void ShowFlags();
+    void ShowOperationInfo();
+    void RunProgram();
 
-void SetupDockspace(bool* p_open);
-static void ShowCommands();
-void ShowRegisters();
-void ShowControls();
-void ShowFlags();
-void ShowOperationInfo();
+    static void PushStyleCompact();
+    static void PopStyleCompact();
+    int Pause();
+};
 
-int DrawUI();
-
-static void PushStyleCompact();
-static void PopStyleCompact();
-int Pause();

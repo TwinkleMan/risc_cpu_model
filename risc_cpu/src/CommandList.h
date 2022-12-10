@@ -470,35 +470,6 @@ namespace Commands {
     /*TFLT rd, rs1*/
     /*rd <- float(rs1)*/
     void TFLT(Mem& memory, Command command) {
-        /*Word number = memory.registers[command.param2];
-
-        //101001 to float
-        bool temp = (number & (1 << 31));
-        memory.registers[command.param1] = 0;
-        memory.registers[command.param1] |= (temp << 31);
-        int index = 0;
-        for (int i = 30; i >= 0; --i) {
-            if (number & (1 << i)) {
-                index = i;
-                break;
-            }
-        }
-
-        Byte exponent;
-        exponent = index + 127;
-
-        //memory.registers[command.param1] |= (number & ~(1 << index) >> 9);
-        memory.registers[command.param1] |= (number >> 7);
-        for (int i = 30; i >= 23; --i) {
-            memory.registers[command.param1] &= ~(1 << i);
-        }
-        memory.registers[command.param1] |= exponent << 23;
-
-        std::cout << "float version of " << std::bitset<32>(number) << " = " << std::bitset<1>(memory.registers[command.param1] >> 31)
-                << " " << std::bitset<8>(memory.registers[command.param1] >> 23) << " " << std::bitset<23>(memory.registers[command.param1]) << std::endl;
-        //std::cout << std::bitset<8>(exponent) << " " << (int)exponent << std::endl;
-        std::cout << std::bitset<32>((float)number) << std::endl;*/
-
         memory.registers[command.param1] = static_cast<float>(memory.registers[command.param2]);
 
         auto test_result = static_cast<double>(memory.registers[command.param2]);
@@ -516,23 +487,6 @@ namespace Commands {
     /*TFIX rd, rs1*/
     /*rd <- int(rs1)*/
     void TFIX(Mem& memory, Command command) {
-        /*Word number = memory.registers[command.param2];
-
-        //101001 to float
-        bool temp = (number & (1 << 31));
-        memory.registers[command.param1] = 0;
-        memory.registers[command.param1] |= (temp << 31);
-
-        Byte exponent;
-        exponent = std::bitset<8>(number >> 23).to_ulong() - 127;
-        memory.registers[command.param1] |= (temp << exponent);
-        memory.registers[command.param1] |= (number << 7);
-
-        std::cout << "int version of " << std::bitset<1>(number >> 31) << " "
-                << std::bitset<8>(number >> 23) << " " << std::bitset<23>(number)
-                << " = " << std::bitset<32>(memory.registers[command.param1]) << std::endl;
-        //std::cout << std::bitset<8>(exponent) << " " << (int)exponent << std::endl;>*/
-
         float newFloat = 0.0f;
         memcpy(&newFloat,&memory.registers[command.param2], sizeof(float));
         memory.registers[command.param1] = static_cast<int>(newFloat);

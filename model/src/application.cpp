@@ -14,10 +14,12 @@ int main() {
 
     std::thread cpuWorker(Init, cpu, mem);
     cpuWorker.join();
-	SetCpuPointer(*cpu);
-    SetMemoryPointer(*mem);
 
-    DrawUI();
+    GUI gui{};
+    gui.SetCpuPointer(*cpu);
+    gui.SetMemoryPointer(*mem);
+
+	gui.DrawUI();
 
     return 0;
 }

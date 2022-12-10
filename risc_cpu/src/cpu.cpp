@@ -128,7 +128,6 @@ void CPU::Execute(u32 cycles, Mem& memory)
 	while (cycles > 0) {
 		Word instruction = FetchWord(cycles, memory);
 		Command command = TranslateCommand(cycles, instruction);
-		//if (Command::_cpu == nullptr) Command::SetCPU(this);
 		RunCommand(command,memory);
 		HandleInterruptions();
 	}
